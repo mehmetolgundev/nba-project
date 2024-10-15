@@ -13,6 +13,7 @@ You can run the project using either of the following methods:
    ```bash
    docker-compose up -d --build
    ```
+![image](https://github.com/user-attachments/assets/7243818e-f11a-4bb7-a9fb-5dd2116e7343)
 
 ## Collection Schema
 
