@@ -26,7 +26,7 @@ func (s MatchService) GetMatches(ctx context.Context, currentTime int) []entitie
 		}
 		availableEvents := s.getAvailableEvents(match, currentTime)
 		for _, event := range availableEvents {
-			if event.Type == "Score" {
+			if event.IsScoreEvent() {
 				matchDTO.MatchStatus = fmt.Sprintf("Continue : %s", getRealTime(currentTime))
 				if event.Team == "Home" {
 					matchDTO.HomeTeamAssists += fmt.Sprintf("%s <br>", event.AsistPlayer)
@@ -38,10 +38,10 @@ func (s MatchService) GetMatches(ctx context.Context, currentTime int) []entitie
 					matchDTO.AwayTeamScorer += fmt.Sprintf("%s (%d) <br>", event.Player, event.Point)
 					matchDTO.AwayTeamScore += event.Point
 				}
-			} else if event.Type == "MatchStarted" {
+			} else if event.IsMatchStartedEvent() {
 				matchDTO.MatchStatus = fmt.Sprintf("Match started at %s <br> CurrentTime: %s", event.DateTime.Format("2006-01-02T15:04:05.000Z"), getRealTime(currentTime))
 
-			} else if event.Type == "MatchFinished" {
+			} else if event.IsMatchStartedFinished() {
 				matchDTO.MatchStatus = fmt.Sprintf("Match finished at %s", event.DateTime.Format("2006-01-02T15:04:05.000Z"))
 			}
 		}
