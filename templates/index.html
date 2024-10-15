@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>NBA Fixtures</title>
+    <script>
+        let currentTime =0;
+        const totalTime = 240;
+        function fetchFixtures() {
+            if(currentTime>totalTime){
+                clearInterval(apiCall)
+                return;
+            }
+            const url = `/api/matches?currentTime=${currentTime}`;
+            fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const fixturesTable = document.getElementById('fixtures-table-body');
+                fixturesTable.innerHTML = ''; 
+                data.forEach(match => {
+                    const table = `
+                    <table class="table table-hover table-dark">
+                        <tbody>
+                      
+                    
+                    <tr>
+                        <td><b>Match Date<b></td>
+                        <td>${match.match_date}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Status<b></td>
+                        <td>${match.match_status}</td>
+                    </tr>
+                    <tr>
+                        <tr>
+                            <td><b>Home Team<b></td>
+                            <td><b>Away Team<b></td>
+                        </tr>
+                        <tr>
+                        <td class="bg-success">${match.home_team}</td>
+                        <td class="bg-primary">${match.away_team}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Score<b></td>
+                            <td><b>Score<b></td>
+                        </tr>
+                        <tr>
+                            <td class="bg-success">${match.home_team_score}</td>
+                            <td class="bg-primary">${match.away_team_score}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Player Assists<b></td>
+                            <td><b>Player Assists<b></td>
+                        </tr>
+                        <tr>
+                            <td class="bg-success">${match.home_team_assists}</td>
+                            <td class="bg-primary">${match.away_team_assists}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Player Scores<b></td>
+                            <td><b>Player Scores<b></td>
+                        </tr>
+                        <tr>
+                            <td class="bg-success">${match.home_team_scorer}</td>
+                            <td class="bg-primary">${match.away_team_scorer}</td>
+                        </tr>
+                    </tr>
+                </tbody>
+            </table><br>`;
+                    fixturesTable.innerHTML += table;
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching fixtures:', error);
+            });
+            currentTime+=5;
+        }
+        const apiCall = setInterval(fetchFixtures, 5000);
+        window.onload = fetchFixtures;
+    </script>
+</head>
+<body>
+    <h1>NBA Fixture</h1>
+    <div style="width: 500px;">
+    <div id="fixtures-table-body">
+
+    </div>
+</div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
